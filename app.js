@@ -12,6 +12,9 @@ app.set('view engine', 'ejs');
 var campgrounds = [
     { name: 'Salmon Greek', image: 'http://photosforclass.com/download/pixabay-1845906?webUrl=https%3A%2F%2Fpixabay.com%2Fget%2Fe83db50a21f4073ed1584d05fb1d4e97e07ee3d21cac104497f9c37aa0ecbdb1_960.jpg&user=Pexels' },
     { name: 'Granite Hill', image: 'https://pixabay.com/get/ec31b90f2af61c22d2524518b7444795ea76e5d004b014439cf2c27ea6e5bc_340.jpg' },
+    { name: 'Mountain Goat\'s rest', image: 'https://pixabay.com/get/e83db40e28fd033ed1584d05fb1d4e97e07ee3d21cac104497f9c379aeeebcba_340.jpg' },
+    { name: 'Salmon Greek', image: 'http://photosforclass.com/download/pixabay-1845906?webUrl=https%3A%2F%2Fpixabay.com%2Fget%2Fe83db50a21f4073ed1584d05fb1d4e97e07ee3d21cac104497f9c37aa0ecbdb1_960.jpg&user=Pexels' },
+    { name: 'Granite Hill', image: 'https://pixabay.com/get/ec31b90f2af61c22d2524518b7444795ea76e5d004b014439cf2c27ea6e5bc_340.jpg' },
     { name: 'Mountain Goat\'s rest', image: 'https://pixabay.com/get/e83db40e28fd033ed1584d05fb1d4e97e07ee3d21cac104497f9c379aeeebcba_340.jpg' }
 ];
 
