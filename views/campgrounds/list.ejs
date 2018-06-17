@@ -1,0 +1,13 @@
+<% include ../partials/header %>
+    <h1>This is a campground page</h1>
+    <a href="/campgrounds/new">Create a new</a>
+    <% model.forEach(item=>{ %>
+        <div>
+            <h4>
+                <%= item.name %>
+            </h4>
+            <img src="<%= item.image%>" />
+        </div>
+        <% }) %>
+
+            <% include ../partials/footer %>
