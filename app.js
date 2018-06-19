@@ -13,42 +13,44 @@ mongoose.connect('mongodb://localhost/yelpcamp');
 
 var campgroundsSchema = new mongoose.Schema({
     name: String,
-    image: String
+    image: String,
+    description: String
 });
 var campgroundsService = mongoose.model("campgrounds", campgroundsSchema);
 
-var campgrounds;
-campgroundsService.find((err, response) => {
-    if (err) {
-        console.log('Error');
-        console.log(err);
-    } else {
-        console.log('Responded all campgrounds');
-        console.log(response);
-        campgrounds = response;
-    }
-});
 
 app.get('/', (request, response) => {
     response.render('landing');
 
 });
 
-
 app.get('/campgrounds', (request, response) => {
-    response.render('campgrounds/list', { model: campgrounds });
+    campgroundsService.find((err, campgrounds) => {
+        if (!err) {
+            response.render('campgrounds/list', { model: campgrounds });
+        }
+    });
 });
 
 app.get('/campgrounds/new', (request, response) => {
     response.render('campgrounds/new.ejs');
 });
 
+app.get('/campgrounds/:id', (request, response) => {
+    campgroundsService.findById(request.params.id, (error, compground) => {
+        if (!error) {
+            console.log(compground);
+            response.render('campgrounds/details.ejs', { model: compground });
+        }
+    });
+});
+
 app.post('/compgrounds', (request, response) => {
     const name = request.body.name;
     const image = request.body.image;
-    campgroundsService.create({ name: name, image: image }, (err, data) => {
+    const description = request.body.description;
+    campgroundsService.create({ name: name, image: image, description: description }, (err, data) => {
         if (!err) {
-            campgrounds.push({ name: name, image: image });
             response.redirect('/campgrounds');
         }
     });

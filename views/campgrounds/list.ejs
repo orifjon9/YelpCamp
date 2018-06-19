@@ -19,13 +19,16 @@
     <div class="row" style="display: flex; flex-wrap: wrap;">
         <% model.forEach(item=>{ %>
             <div class="col-lg-3 col-md-4 col-sm-6">
-                <div class="img-thumbnail">
-                    <img width="100%" src="<%= item.image%>" />
+                <div class="img-thumbnail text-center">
+                    <img width=" 100% " src="<%=item.image%>" />
                     <div class="caption">
                         <h4>
                             <%= item.name %>
                         </h4>
                     </div>
+                    <p>
+                        <a href="/campgrounds/<%=item._id%>" class="btn btn-primary">More info</a>
+                    </p>
                 </div>
             </div>
             <% }) %>
