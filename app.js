@@ -1,12 +1,13 @@
-var express = require('express');
-var bodyParser = require('body-parser');
-var app = express();
+var bodyParser = require('body-parser'),
+    methodOverride = require('method-override'),
+    express = require('express'),
+    app = express();
 
 var mongoose = require('mongoose');
 
 app.use(express.static('public/css'));
 app.use(bodyParser.urlencoded({ extended: true }));
-
+app.use(methodOverride('_method'))
 app.set('view engine', 'ejs');
 
 mongoose.connect('mongodb://localhost/yelpcamp');
@@ -39,13 +40,29 @@ app.get('/campgrounds/new', (request, response) => {
 app.get('/campgrounds/:id', (request, response) => {
     campgroundsService.findById(request.params.id, (error, compground) => {
         if (!error) {
-            console.log(compground);
             response.render('campgrounds/details.ejs', { model: compground });
         }
     });
 });
 
-app.post('/compgrounds', (request, response) => {
+app.get('/campgrounds/:id/edit', (request, response) => {
+    campgroundsService.findById(request.params.id, (error, compground) => {
+        if (!error) {
+            response.render('campgrounds/edit.ejs', { model: compground });
+        }
+    });
+});
+
+app.put('/campgrounds/:id', (request, response) => {
+    campgroundsService.findByIdAndUpdate(request.params.id, request.body.campground, (error, compground) => {
+        if (!error) {
+            response.redirect('/campgrounds/' + request.params.id);
+        }
+    });
+});
+
+
+app.post('/campgrounds', (request, response) => {
     const name = request.body.name;
     const image = request.body.image;
     const description = request.body.description;
