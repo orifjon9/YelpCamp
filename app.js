@@ -53,15 +53,6 @@ app.get('/campgrounds/:id/edit', (request, response) => {
     });
 });
 
-app.put('/campgrounds/:id', (request, response) => {
-    campgroundsService.findByIdAndUpdate(request.params.id, request.body.campground, (error, compground) => {
-        if (!error) {
-            response.redirect('/campgrounds/' + request.params.id);
-        }
-    });
-});
-
-
 app.post('/campgrounds', (request, response) => {
     const name = request.body.name;
     const image = request.body.image;
@@ -73,6 +64,21 @@ app.post('/campgrounds', (request, response) => {
     });
 
 });
+
+app.put('/campgrounds/:id', (request, response) => {
+    campgroundsService.findByIdAndUpdate(request.params.id, request.body.campground, (error, compground) => {
+        if (!error) {
+            response.redirect('/campgrounds/' + request.params.id);
+        }
+    });
+});
+
+app.delete('/campgrounds/:id', (req, res) => {
+    campgroundsService.findByIdAndRemove(req.params.id, (err, data) => {
+        res.redirect('/campgrounds');
+    });
+});
+
 
 
 app.listen(3000, () => {

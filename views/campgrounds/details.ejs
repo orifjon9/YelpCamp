@@ -2,15 +2,18 @@
 
     <div class="row">
         <h1>Details of campground</h1>
-        <div class="col-md-4">
+        <div class="col-md-6">
             <p>
                 <%=model.name%>
             </p>
-            <img src="<%=model.image%>" />
+            <img src="<%=model.image%>" width="100%" />
             <p>
                 <%=model.description%>
             </p>
-            <a class="btn btn-block btn-primary" href="/campgrounds/<%=model._id%>/edit">Edit</a>
+            <a class="btn btn-lg btn-primary" href="/campgrounds/<%=model._id%>/edit">Edit</a>
+            <form id="delete" action="/campgrounds/<%=model._id%>?_method=DELETE" method="POST">
+                <button class="btn btn-lg btn-danger">Delete</button>
+            </form>
         </div>
 
     </div>
