@@ -1,23 +1,19 @@
 var bodyParser = require('body-parser'),
     methodOverride = require('method-override'),
     express = require('express'),
-    app = express();
+    app = express(),
+    mongoose = require('mongoose'),
+    campgroundsService = require('./models/campground'),
+    seedDB = require('./seeds');
 
-var mongoose = require('mongoose');
+mongoose.connect('mongodb://localhost/yelpcamp');
+
+//seedDB();
 
 app.use(express.static('public/css'));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(methodOverride('_method'))
 app.set('view engine', 'ejs');
-
-mongoose.connect('mongodb://localhost/yelpcamp');
-
-var campgroundsSchema = new mongoose.Schema({
-    name: String,
-    image: String,
-    description: String
-});
-var campgroundsService = mongoose.model("campgrounds", campgroundsSchema);
 
 
 app.get('/', (request, response) => {
@@ -38,8 +34,9 @@ app.get('/campgrounds/new', (request, response) => {
 });
 
 app.get('/campgrounds/:id', (request, response) => {
-    campgroundsService.findById(request.params.id, (error, compground) => {
+    campgroundsService.findById(request.params.id).populate('comments').exec((error, compground) => {
         if (!error) {
+            console.log(compground);
             response.render('campgrounds/details.ejs', { model: compground });
         }
     });

@@ -17,3 +17,13 @@
         </div>
 
     </div>
+    <div class="row">
+        <div class="col-md-6">
+            <% model.comments.forEach(comment => { %>
+                <p>
+                    <strong> <%= comment.author%></strong> -
+                    <%= comment.text %>
+                </p>
+                <%}) %>
+        </div>
+    </div>
