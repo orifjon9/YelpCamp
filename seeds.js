@@ -31,7 +31,7 @@ function seedDB() {
                         console.log(error);
                     } else {
                         console.log('Added campground');
-                        Comment.create({
+                        /*Comment.create({
                             text: 'This is great place',
                             author: 'Orifjon Narkulov'
                         }, (error, comment) => {
@@ -41,7 +41,7 @@ function seedDB() {
                                 campground.comments.push(comment);
                                 campground.save();
                             }
-                        });
+                        });*/
                     }
                 });
             })

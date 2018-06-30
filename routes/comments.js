@@ -20,7 +20,11 @@ router.post('/', isLoggedIn, (req, res) => {
         if (!err) {
             var newComment = {
                 text: req.body.comment.text,
-                author: req.user.username
+                author: {
+                    id: req.user._id,
+                    username: req.user.username
+                }
+
             };
             console.log(newComment);
             Comment.create(newComment, (err, comment) => {
