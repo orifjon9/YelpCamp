@@ -20,6 +20,10 @@
                     <p>
                         <%=model.description%>
                     </p>
+                    <p>
+                        <em> Submitted By:
+                        <%=model.author.username %></em>
+                    </p>
                 </div>
                 <a class="btn btn-lg btn-primary" href="/campgrounds/<%=model._id%>/edit">Edit</a>
 
