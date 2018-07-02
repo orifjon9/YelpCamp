@@ -23,8 +23,8 @@ router.post('/', isLoggedIn, (req, res) => {
                 author: {
                     id: req.user._id,
                     username: req.user.username
-                }
-
+                },
+                createdDate: new Date()
             };
             console.log(newComment);
             Comment.create(newComment, (err, comment) => {
@@ -37,6 +37,36 @@ router.post('/', isLoggedIn, (req, res) => {
                     });
                 }
             });
+        }
+    });
+});
+
+router.get('/:comment_id/edit', (req, res) => {
+    Comment.findById(req.params.comment_id, (err, foundComment) => {
+        if (err) {
+            res.redirect('back');
+        } else {
+            res.render('comments/edit.ejs', { comment: foundComment, campgroundId: req.params.id });
+        }
+    });
+});
+
+router.put('/:comment_id', (req, res) => {
+    Comment.findByIdAndUpdate(req.params.comment_id, req.body.comment, (err, foundComment) => {
+        if (err) {
+            res.redirect('back');
+        } else {
+            res.redirect('/campgrounds/' + req.params.id);
+        }
+    });
+});
+
+router.delete('/:comment_id', (req, res) => {
+    Comment.findByIdAndRemove(req.params.comment_id, (err, foundComment) => {
+        if (err) {
+            res.redirect('back');
+        } else {
+            res.redirect('/campgrounds/' + req.params.id);
         }
     });
 });

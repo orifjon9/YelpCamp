@@ -2,6 +2,20 @@ var express = require('express'),
     router = express.Router(),
     Campground = require('../models/campground');
 
+checkOwnerShip = (req, res, next) => {
+    if (req.isAuthenticated()) {
+        Campground.findById(req.params.id, (err, campground) => {
+            if (!err && campground.author.id.equals(req.user._id)) {
+                return next();
+            } else {
+                res.redirect("back");
+            }
+        })
+    } else {
+        res.redirect("/login");
+    }
+}
+
 // campground list page
 router.get('/', (request, response) => {
     Campground.find((err, campgrounds) => {
@@ -48,7 +62,7 @@ router.get('/:id', (request, response) => {
 });
 
 // update campground
-router.put('/:id', isLoggedIn, (request, response) => {
+router.put('/:id', checkOwnerShip, (request, response) => {
     Campground.findByIdAndUpdate(request.params.id, request.body.campground, (error, compground) => {
         if (!error) {
             response.redirect('/campgrounds/' + request.params.id);
@@ -57,7 +71,7 @@ router.put('/:id', isLoggedIn, (request, response) => {
 });
 
 // campground edit page
-router.get('/:id/edit', isLoggedIn, (request, response) => {
+router.get('/:id/edit', checkOwnerShip, (request, response) => {
     Campground.findById(request.params.id, (error, compground) => {
         if (!error) {
             response.render('campgrounds/edit.ejs', { model: compground });
@@ -66,7 +80,7 @@ router.get('/:id/edit', isLoggedIn, (request, response) => {
 });
 
 // delete campground
-router.delete('/:id', isLoggedIn, (req, res) => {
+router.delete('/:id', checkOwnerShip, (req, res) => {
     Campground.findByIdAndRemove(req.params.id, (err, data) => {
         res.redirect('/campgrounds');
     });
@@ -78,6 +92,7 @@ function isLoggedIn(req, res, next) {
     }
     res.redirect('/login');
 }
+
 
 
 module.exports = router;
