@@ -3,6 +3,21 @@ var express = require('express'),
     Comment = require('../models/comment'),
     Campground = require('../models/campground');
 
+checkOwnerShip = (req, res, next) => {
+    if (req.isAuthenticated()) {
+        Comment.findById(req.params.comment_id, (err, foundComment) => {
+            if (!err && foundComment.author.id.equals(req.user._id)) {
+                return next();
+            } else {
+                res.redirect("back");
+            }
+        })
+    } else {
+        res.redirect("/login");
+    }
+}
+
+
 // get(<link>, <middleware>, callback)
 
 // comments new page
@@ -41,7 +56,8 @@ router.post('/', isLoggedIn, (req, res) => {
     });
 });
 
-router.get('/:comment_id/edit', (req, res) => {
+// edit comment page
+router.get('/:comment_id/edit', checkOwnerShip, (req, res) => {
     Comment.findById(req.params.comment_id, (err, foundComment) => {
         if (err) {
             res.redirect('back');
@@ -51,7 +67,8 @@ router.get('/:comment_id/edit', (req, res) => {
     });
 });
 
-router.put('/:comment_id', (req, res) => {
+// update exist comment
+router.put('/:comment_id', checkOwnerShip, (req, res) => {
     Comment.findByIdAndUpdate(req.params.comment_id, req.body.comment, (err, foundComment) => {
         if (err) {
             res.redirect('back');
@@ -61,7 +78,8 @@ router.put('/:comment_id', (req, res) => {
     });
 });
 
-router.delete('/:comment_id', (req, res) => {
+// delete exist comment
+router.delete('/:comment_id', checkOwnerShip, (req, res) => {
     Comment.findByIdAndRemove(req.params.comment_id, (err, foundComment) => {
         if (err) {
             res.redirect('back');

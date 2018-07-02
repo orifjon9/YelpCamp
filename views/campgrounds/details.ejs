@@ -49,10 +49,12 @@
                                 <%= comment.text %>
                             </p>
 
-                            <a href="/campgrounds/<%=model._id%>/comments/<%=comment._id%>/edit" class="btn btn-warning btn-xs">Edit</a>
-                            <form class="delete" action="/campgrounds/<%=model._id%>/comments/<%=comment._id%>?_method=DELETE" method="POST">
-                                <button class="btn btn-xs btn-danger">Delete</button>
-                            </form>
+                            <%if(currentUser && currentUser._id.equals(comment.author.id)){%>
+                                <a href="/campgrounds/<%=model._id%>/comments/<%=comment._id%>/edit" class="btn btn-warning btn-xs">Edit</a>
+                                <form class="delete" action="/campgrounds/<%=model._id%>/comments/<%=comment._id%>?_method=DELETE" method="POST">
+                                    <button class="btn btn-xs btn-danger">Delete</button>
+                                </form>
+                                <%}%>
                         </div>
                     </div>
 
