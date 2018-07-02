@@ -5,6 +5,7 @@ var bodyParser = require('body-parser'),
     mongoose = require('mongoose'),
     passport = require('passport'),
     LocalStrategy = require('passport-local'),
+    flash = require('connect-flash'),
     User = require('./models/user'),
     seedDB = require('./seeds');
 
@@ -20,6 +21,7 @@ app.use(express.static('public/css'));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(methodOverride('_method'))
 app.set('view engine', 'ejs');
+app.use(flash());
 
 // PASSPORT CONFIGURATION
 app.use(require('express-session')({
@@ -36,6 +38,8 @@ passport.deserializeUser(User.deserializeUser());
 // set loggined user
 app.use((req, res, next) => {
     res.locals.currentUser = req.user;
+    res.locals.errorMessage = req.flash('error');
+    res.locals.successMessage = req.flash('success');
     next();
 })
 
@@ -46,7 +50,6 @@ app.use("/campgrounds/:id/comments", commentsRouters);
 
 app.get('/', (request, response) => {
     response.render('landing');
-
 });
 
 app.listen(3000, () => {

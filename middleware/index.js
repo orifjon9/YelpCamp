@@ -6,6 +6,7 @@ module.exports = {
         if (req.isAuthenticated()) {
             return next();
         }
+        req.flash('error', 'Please login First!');
         res.redirect('/login');
     },
     checkCampgroundOwnerShip: (req, res, next) => {
@@ -17,8 +18,6 @@ module.exports = {
                     res.redirect("back");
                 }
             })
-        } else {
-            res.redirect("/login");
         }
     },
     checkCommentOwnerShip: (req, res, next) => {
@@ -30,8 +29,6 @@ module.exports = {
                     res.redirect("back");
                 }
             })
-        } else {
-            res.redirect("/login");
         }
     }
 };

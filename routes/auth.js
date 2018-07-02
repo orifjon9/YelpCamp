@@ -24,6 +24,7 @@ router.post('/register', (req, res) => {
 
 // login page
 router.get('/login', (req, res) => {
+    req.flash('error', 'Please login first!!!')
     res.render('auth/login.ejs', { message: undefined });
 })
 
@@ -36,7 +37,8 @@ router.post('/login', passport.authenticate('local', {
 // logout
 router.get('/logout', (req, res) => {
     req.logout();
-    res.redirect('/login');
+    req.flash('success', 'Logged you out!');
+    res.redirect('/campgrounds');
 })
 
 module.exports = router;
