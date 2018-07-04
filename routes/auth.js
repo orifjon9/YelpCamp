@@ -5,7 +5,7 @@ var express = require('express'),
 
 // register page
 router.get('/register', (req, res) => {
-    res.render('auth/register.ejs', { message: undefined });
+    res.render('auth/register.ejs');
 })
 
 // register new user
@@ -13,10 +13,11 @@ router.post('/register', (req, res) => {
     var newUser = new User({ username: req.body.username });
     User.register(newUser, req.body.password, (err, user) => {
         if (err) {
-            console.log(err);
-            return res.render('auth/register.ejs', { message: err.message });
+            req.flash('error', err.message);
+            return res.render('auth/register.ejs');
         }
         passport.authenticate('local')(req, res, () => {
+            req.flash('success', 'Welcome to YelpCamp');
             res.redirect('/campgrounds');
         });
     })
@@ -24,8 +25,7 @@ router.post('/register', (req, res) => {
 
 // login page
 router.get('/login', (req, res) => {
-    req.flash('error', 'Please login first!!!')
-    res.render('auth/login.ejs', { message: undefined });
+    res.render('auth/login.ejs');
 })
 
 // login operation

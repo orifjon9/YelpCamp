@@ -6,7 +6,7 @@ module.exports = {
         if (req.isAuthenticated()) {
             return next();
         }
-        req.flash('error', 'Please login First!');
+        req.flash('error', 'You need to be logged in to do that');
         res.redirect('/login');
     },
     checkCampgroundOwnerShip: (req, res, next) => {
@@ -15,9 +15,10 @@ module.exports = {
                 if (!err && campground.author.id.equals(req.user._id)) {
                     return next();
                 } else {
+                    req.flash('error', 'You  dont have permission or campground not found');
                     res.redirect("back");
                 }
-            })
+            });
         }
     },
     checkCommentOwnerShip: (req, res, next) => {
@@ -26,9 +27,10 @@ module.exports = {
                 if (!err && foundComment.author.id.equals(req.user._id)) {
                     return next();
                 } else {
+                    req.flash('error', 'You  dont have permission or comment not found');
                     res.redirect("back");
                 }
-            })
+            });
         }
     }
 };

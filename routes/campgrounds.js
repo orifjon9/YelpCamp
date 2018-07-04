@@ -28,6 +28,7 @@ router.post('/', middleware.isLoggedIn, (request, response) => {
     };
     Campground.create(newCampground, (err, data) => {
         if (!err) {
+            request.flash('success', 'Successfully added Camoground!');
             response.redirect('/campgrounds');
         }
     });
@@ -42,7 +43,6 @@ router.get('/new', middleware.isLoggedIn, (request, response) => {
 router.get('/:id', (request, response) => {
     Campground.findById(request.params.id).populate('comments').exec((error, compground) => {
         if (!error) {
-            console.log(compground);
             response.render('campgrounds/details.ejs', { model: compground });
         }
     });
@@ -52,6 +52,7 @@ router.get('/:id', (request, response) => {
 router.put('/:id', middleware.checkCampgroundOwnerShip, (request, response) => {
     Campground.findByIdAndUpdate(request.params.id, request.body.campground, (error, compground) => {
         if (!error) {
+            request.flash('success', 'Successfully updated Camoground!');
             response.redirect('/campgrounds/' + request.params.id);
         }
     });
@@ -69,6 +70,7 @@ router.get('/:id/edit', middleware.checkCampgroundOwnerShip, (request, response)
 // delete campground
 router.delete('/:id', middleware.checkCampgroundOwnerShip, (req, res) => {
     Campground.findByIdAndRemove(req.params.id, (err, data) => {
+        req.flash('success', 'Successfully removed Camoground!');
         res.redirect('/campgrounds');
     });
 });
